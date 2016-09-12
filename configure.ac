@@ -91,6 +91,7 @@ XCBGLX_REQUIRED=1.8.1
 XSHMFENCE_REQUIRED=1.1
 XVMC_REQUIRED=1.0.6
 PYTHON_MAKO_REQUIRED=0.8.0
+LIBSENSORS_REQUIRED=4.0.0
 
 dnl Check for progs
 AC_PROG_CPP
@@ -871,6 +872,17 @@ AC_ARG_ENABLE([dri],
     [enable_dri="$enableval"],
     [enable_dri=yes])
 
+#PKG_CHECK_MODULES([LIBSENSORS], [libsensors >= $LIBSENSORS_REQUIRED], [enable_lmsensors=yes], [enable_lmsensors=no])
+AC_ARG_ENABLE([lmsensors],
+    [AS_HELP_STRING([--enable-lmsensors],
+        [enable HUD lmsensor support @<:@default=disabled@:>@])],
+    [enable_lmsensors="$enableval"],
+    [enable_lmsensors=no])
+AM_CONDITIONAL(HAVE_LMSENSORS, test "x$enable_lmsensors" = xyes)
+if test "x$enable_lmsensors" = xyes ; then
+    DEFINES="${DEFINES} -DHAVE_LMSENSORS=1"
+fi
+
 case "$host_os" in
 linux*)
     dri3_default=yes
@@ -1122,6 +1134,7 @@ AM_CONDITIONAL(HAVE_DRISW_KMS, test "x$have_drisw_kms" = xyes )
 AM_CONDITIONAL(HAVE_DRI2, test "x$enable_dri" = xyes -a "x$dri_platform" = xdrm -a "x$have_libdrm" = xyes )
 AM_CONDITIONAL(HAVE_DRI3, test "x$enable_dri3" = xyes -a "x$dri_platform" = xdrm -a "x$have_libdrm" = xyes )
 AM_CONDITIONAL(HAVE_APPLEDRI, test "x$enable_dri" = xyes -a "x$dri_platform" = xapple )
+AM_CONDITIONAL(HAVE_LMSENSORS, test "x$enable_lmsensors" = xyes )
 
 AC_ARG_ENABLE([shared-glapi],
     [AS_HELP_STRING([--enable-shared-glapi],
@@ -2874,6 +2887,13 @@ if test -n "$with_gallium_drivers"; then
     echo "        Gallium st:      $gallium_st"
 else
     echo "        Gallium:         no"
+fi
+
+echo ""
+if test "x$enable_lmsensors" != xyes; then
+    echo "        lmsensors:       no"
+else
+    echo "        lmsensors:       yes"
 fi
 
 dnl Shader cache

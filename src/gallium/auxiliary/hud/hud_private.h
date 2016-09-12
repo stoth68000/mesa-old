@@ -103,4 +103,27 @@ boolean hud_driver_query_install(struct hud_batch_query_context **pbq,
 void hud_batch_query_update(struct hud_batch_query_context *bq);
 void hud_batch_query_cleanup(struct hud_batch_query_context **pbq);
 
+int hud_get_num_nics(int displayhelp);
+#define NIC_DIRECTION_RX 1
+#define NIC_DIRECTION_TX 2
+#define NIC_RSSI_DBM     3
+void hud_nic_graph_install(struct hud_pane *pane, char *nic_index,
+                           unsigned int mode);
+
+int hud_get_num_disks(int displayhelp);
+#define DISKSTAT_RD 1
+#define DISKSTAT_WR 2
+void hud_diskstat_graph_install(struct hud_pane *pane, char *dev_name,
+                                unsigned int mode);
+
+#if HAVE_LMSENSORS
+int hud_get_num_sensors(int displayhelp);
+#define SENSORS_TEMP_CURRENT     1
+#define SENSORS_TEMP_CRITICAL    2
+#define SENSORS_VOLTAGE_CURRENT  3
+#define SENSORS_CURRENT_CURRENT  4
+void hud_sensors_temp_graph_install(struct hud_pane *pane, char *dev_name,
+                                    unsigned int mode);
+#endif
+
 #endif
