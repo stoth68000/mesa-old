@@ -2909,9 +2909,9 @@ else
 fi
 
 if test "x$enable_lmsensors" != xyes; then
-    echo "        lmsensors:       no"
+    echo "        HUD lmsensors:   no"
 else
-    echo "        lmsensors:       yes"
+    echo "        HUD lmsensors:   yes"
 fi
 
 dnl Shader cache
