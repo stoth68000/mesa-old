@@ -26,6 +26,8 @@
  *
  **************************************************************************/
 
+#if HAVE_GALLIUM_EXTRA_HUD
+
 /* Purpose: Reading network interface RX/TX throughput per second,
  * displaying on the HUD.
  */
@@ -435,3 +437,5 @@ hud_get_num_nics(int displayhelp)
 
    return gnic_count;
 }
+
+#endif /* HAVE_GALLIUM_EXTRA_HUD */

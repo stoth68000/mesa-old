@@ -103,6 +103,7 @@ boolean hud_driver_query_install(struct hud_batch_query_context **pbq,
 void hud_batch_query_update(struct hud_batch_query_context *bq);
 void hud_batch_query_cleanup(struct hud_batch_query_context **pbq);
 
+#if HAVE_GALLIUM_EXTRA_HUD
 int hud_get_num_nics(int displayhelp);
 #define NIC_DIRECTION_RX 1
 #define NIC_DIRECTION_TX 2
@@ -115,8 +116,9 @@ int hud_get_num_disks(int displayhelp);
 #define DISKSTAT_WR 2
 void hud_diskstat_graph_install(struct hud_pane *pane, char *dev_name,
                                 unsigned int mode);
+#endif
 
-#if HAVE_LMSENSORS
+#if HAVE_LIBSENSORS
 int hud_get_num_sensors(int displayhelp);
 #define SENSORS_TEMP_CURRENT     1
 #define SENSORS_TEMP_CRITICAL    2

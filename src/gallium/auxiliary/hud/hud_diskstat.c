@@ -26,6 +26,8 @@
  *
  **************************************************************************/
 
+#if HAVE_GALLIUM_EXTRA_HUD
+
 /* Purpose: Reading /sys/block/<*>/stat MB/s read/write throughput per second,
  * displaying on the HUD.
  */
@@ -329,3 +331,5 @@ hud_get_num_disks(int displayhelp)
 
    return gdiskstat_count;
 }
+
+#endif /* HAVE_GALLIUM_EXTRA_HUD */

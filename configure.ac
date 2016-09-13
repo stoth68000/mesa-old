@@ -872,16 +872,31 @@ AC_ARG_ENABLE([dri],
     [enable_dri="$enableval"],
     [enable_dri=yes])
 
+AC_ARG_ENABLE([gallium-extra-hud],
+    [AS_HELP_STRING([--enable-gallium-extra-hud],
+        [enable HUD block/NIC I/O HUD stats support @<:@default=disabled@:>@])],
+    [enable_gallium_extra_hud="$enableval"],
+    [enable_gallium_extra_hud=no])
+AM_CONDITIONAL(HAVE_GALLIUM_EXTRA_HUD, test "x$enable_gallium_extra_hud" = xyes)
+if test "x$enable_gallium_extra_hud" = xyes ; then
+    DEFINES="${DEFINES} -DHAVE_GALLIUM_EXTRA_HUD=1"
+fi
+
+#TODO: no pkgconfig .pc available for libsensors.
 #PKG_CHECK_MODULES([LIBSENSORS], [libsensors >= $LIBSENSORS_REQUIRED], [enable_lmsensors=yes], [enable_lmsensors=no])
 AC_ARG_ENABLE([lmsensors],
     [AS_HELP_STRING([--enable-lmsensors],
         [enable HUD lmsensor support @<:@default=disabled@:>@])],
     [enable_lmsensors="$enableval"],
     [enable_lmsensors=no])
-AM_CONDITIONAL(HAVE_LMSENSORS, test "x$enable_lmsensors" = xyes)
+AM_CONDITIONAL(HAVE_LIBSENSORS, test "x$enable_lmsensors" = xyes)
 if test "x$enable_lmsensors" = xyes ; then
-    DEFINES="${DEFINES} -DHAVE_LMSENSORS=1"
+    DEFINES="${DEFINES} -DHAVE_LIBSENSORS=1"
+    LIBSENSORS_LDFLAGS="-lsensors"
+else
+    LIBSENSORS_LDFLAGS=""
 fi
+AC_SUBST(LIBSENSORS_LDFLAGS)
 
 case "$host_os" in
 linux*)
@@ -1135,6 +1150,7 @@ AM_CONDITIONAL(HAVE_DRI2, test "x$enable_dri" = xyes -a "x$dri_platform" = xdrm 
 AM_CONDITIONAL(HAVE_DRI3, test "x$enable_dri3" = xyes -a "x$dri_platform" = xdrm -a "x$have_libdrm" = xyes )
 AM_CONDITIONAL(HAVE_APPLEDRI, test "x$enable_dri" = xyes -a "x$dri_platform" = xapple )
 AM_CONDITIONAL(HAVE_LMSENSORS, test "x$enable_lmsensors" = xyes )
+AM_CONDITIONAL(HAVE_GALLIUM_EXTRA_HUD, test "x$enable_gallium_extra_hud" = xyes )
 
 AC_ARG_ENABLE([shared-glapi],
     [AS_HELP_STRING([--enable-shared-glapi],
@@ -2890,10 +2906,16 @@ else
 fi
 
 echo ""
-if test "x$enable_lmsensors" != xyes; then
-    echo "        lmsensors:       no"
+if test "x$enable_gallium_extra_hud" != xyes; then
+    echo "        HUD extra stats: no"
 else
-    echo "        lmsensors:       yes"
+    echo "        HUD extra stats: yes"
+fi
+
+if test "x$enable_lmsensors" != xyes; then
+    echo "        HUD lmsensors:   no"
+else
+    echo "        HUD lmsensors:   yes"
 fi
 
 dnl Shader cache

@@ -1013,7 +1013,9 @@ hud_parse_env_var(struct hud_context *hud, const char *env)
       }
 
       /* Add a graph. */
+#if HAVE_GALLIUM_EXTRA_HUD || HAVE_LIBSENSORS
       char arg_name[64];
+#endif
       /* IF YOU CHANGE THIS, UPDATE print_help! */
       if (strcmp(name, "fps") == 0) {
          hud_fps_graph_install(pane);
@@ -1024,6 +1026,7 @@ hud_parse_env_var(struct hud_context *hud, const char *env)
       else if (sscanf(name, "cpu%u%s", &i, s) == 1) {
          hud_cpu_graph_install(pane, i);
       }
+#if HAVE_GALLIUM_EXTRA_HUD
       else if (sscanf(name, "nic-rx-%s", arg_name) == 1) {
          hud_nic_graph_install(pane, arg_name, NIC_DIRECTION_RX);
       }
@@ -1042,7 +1045,8 @@ hud_parse_env_var(struct hud_context *hud, const char *env)
          hud_diskstat_graph_install(pane, arg_name, DISKSTAT_WR);
          pane->type = PIPE_DRIVER_QUERY_TYPE_BYTES;
       }
-#if HAVE_LMSENSORS
+#endif
+#if HAVE_LIBSENSORS
       else if (sscanf(name, "sensors_temp_cu-%s", arg_name) == 1) {
          hud_sensors_temp_graph_install(pane, &name[16],
                                         SENSORS_TEMP_CURRENT);
@@ -1273,9 +1277,11 @@ print_help(struct pipe_screen *screen)
       puts("    cs-invocations");
    }
 
+#if HAVE_GALLIUM_EXTRA_HUD
    hud_get_num_disks(1);
    hud_get_num_nics(1);
-#if HAVE_LMSENSORS
+#endif
+#if HAVE_LIBSENSORS
    hud_get_num_sensors(1);
 #endif
 
