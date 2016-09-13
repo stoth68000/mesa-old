@@ -872,6 +872,7 @@ AC_ARG_ENABLE([dri],
     [enable_dri="$enableval"],
     [enable_dri=yes])
 
+#TODO: no pkgconfig .pc available for libsensors.
 #PKG_CHECK_MODULES([LIBSENSORS], [libsensors >= $LIBSENSORS_REQUIRED], [enable_lmsensors=yes], [enable_lmsensors=no])
 AC_ARG_ENABLE([lmsensors],
     [AS_HELP_STRING([--enable-lmsensors],
