@@ -889,10 +889,14 @@ AC_ARG_ENABLE([lmsensors],
         [enable HUD lmsensor support @<:@default=disabled@:>@])],
     [enable_lmsensors="$enableval"],
     [enable_lmsensors=no])
-AM_CONDITIONAL(HAVE_LMSENSORS, test "x$enable_lmsensors" = xyes)
+AM_CONDITIONAL(HAVE_LIBSENSORS, test "x$enable_lmsensors" = xyes)
 if test "x$enable_lmsensors" = xyes ; then
-    DEFINES="${DEFINES} -DHAVE_LMSENSORS=1"
+    DEFINES="${DEFINES} -DHAVE_LIBSENSORS=1"
+    LIBSENSORS_LDFLAGS="-lsensors"
+else
+    LIBSENSORS_LDFLAGS=""
 fi
+AC_SUBST(LIBSENSORS_LDFLAGS)
 
 case "$host_os" in
 linux*)

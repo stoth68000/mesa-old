@@ -26,7 +26,7 @@
  *
  **************************************************************************/
 
-#if HAVE_LMSENSORS
+#if HAVE_LIBSENSORS
 /* Purpose: Extract lm-sensors data, expose temperature, power, voltage. */
 
 #include "hud/hud_private.h"
@@ -371,4 +371,4 @@ hud_get_num_sensors(int displayhelp)
    return gsensors_temp_count;
 }
 
-#endif /* HAVE_LMSENSORS */
+#endif /* HAVE_LIBSENSORS */

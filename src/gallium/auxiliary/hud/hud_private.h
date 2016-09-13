@@ -118,7 +118,7 @@ void hud_diskstat_graph_install(struct hud_pane *pane, char *dev_name,
                                 unsigned int mode);
 #endif
 
-#if HAVE_LMSENSORS
+#if HAVE_LIBSENSORS
 int hud_get_num_sensors(int displayhelp);
 #define SENSORS_TEMP_CURRENT     1
 #define SENSORS_TEMP_CRITICAL    2
